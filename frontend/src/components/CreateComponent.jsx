@@ -1,6 +1,6 @@
 import React from "react";
 
-const CreateComponent = ( info, current_component, removeComponent ) => {
+const CreateComponent = ({ info, current_component, removeComponent }) => {
   const randValue = Math.floor(Math.random() * 100);
   let html = "";
   if (info.name === "main_frame") {
