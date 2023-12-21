@@ -10,7 +10,7 @@ const Header = () => {
     <div className="h-[60px] bg-gradient-to-r from-[#212122] via-[#27282b] to-[#2a2b2c] w-full">
       <div className="flex justify-between px-10 items-center text-gray-300 h-full">
         <Link to="/">
-          <div className="w-[80px] h-[48px]">
+          <div className="w-[70px] h-[40px]">
             <img
               className="w-full h-full"
               src="https://tse4.mm.bing.net/th?id=OIP.mmou9HlkrsJlYMNYtNcneAAAAA&pid=Api&P=0&h=180"
