@@ -5,7 +5,10 @@ import { FaShapes, FaCloudUploadAlt } from "react-icons/fa";
 import { TfiText } from "react-icons/tfi";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { RxTransparencyGrid } from "react-icons/rx";
-import TemplateDesign from '../components/main/TemplateDesign'
+import TemplateDesign from "../components/main/TemplateDesign";
+import MyImages from "../components/MyImages";
+import Projects from "../components/Projects";
+import Image from "../components/Image";
 
 const Main = () => {
   const [state, setState] = useState("");
@@ -128,33 +131,47 @@ const Main = () => {
               </div>
             )}
             {state === "shape" && (
-              <div>
-                shape
+              <div className="grid grid-cols-3 gap-2">
+                <div className="h-[90px] bg-[#3c3c3d] cursor-pointer"></div>
+                <div className="h-[90px] bg-[#3c3c3d] cursor-pointer rounded-full"></div>
+                <div
+                  style={{ clipPath: "polygon(50% 0,100% 100%,0 100%)" }}
+                  className="h-[90px] bg-[#3c3c3d] cursor-pointer"
+                ></div>
               </div>
             )}
-            {state === "image" && (
-              <div>
-                image
-              </div>
-            )}
+            {state === "image" && <MyImages />}
             {state === "text" && (
               <div>
-                text
+                <div className="gird grid-cols-1 gap-2">
+                  <div className="bg-[#3c3c3d] cursor-pointer font-bold p-3 text-white text-xl rounded-sm">
+                    <h2>Add a Text</h2>
+                  </div>
+                </div>
               </div>
             )}
-            {state === "project" && (
-              <div>
-                project
-              </div>
-            )}
+            {state === "project" && <Projects />}
             {state === "initImage" && (
-              <div>
-                initImage
+              <div className="h-[88vh] overflow-x-auto flex justify-start items-start scrollbar-hide">
+                <Image />
               </div>
             )}
             {state === "background" && (
-              <div>
-                background
+              <div className="h-[88vh] overflow-x-auto flex justify-start items-start scrollbar-hide">
+                <div className="grid gird-cols-2 gap-2">
+                  {[1, 2, 3, 4, 6, 7, 8, 5].map((img, i) => (
+                    <div
+                      key={i}
+                      className="w-full h-[180px] overflow-hidden rounded-sm cursor-pointer"
+                    >
+                      <img
+                        className="w-full h-full object-fill"
+                        src={`http://localhost:5173/project.png`}
+                        alt=""
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
