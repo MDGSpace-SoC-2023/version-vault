@@ -9,9 +9,11 @@ import TemplateDesign from "../components/main/TemplateDesign";
 import MyImages from "../components/MyImages";
 import Projects from "../components/Projects";
 import Image from "../components/Image";
+import CreateComponente from "../components/CreateComponent";
 
 const Main = () => {
   const [state, setState] = useState("");
+  const [current_component, setCurrentComponent] = useState("");
   const [show, setShow] = useState({
     status: true,
     name: "",
@@ -25,6 +27,37 @@ const Main = () => {
     });
   };
 
+  const moveElement = () => {
+    console.log(`move`);
+  };
+
+  const resizeElement = () => {
+    console.log(`resizeElement`);
+  };
+
+  const rotateElement = () => {
+    console.log(`rotateElement`);
+  };
+
+  const [components, setComponents] = useState([
+    {
+      name: "main_frame",
+      type: "rect",
+      id: Math.floor(Math.random() * 100 + 1),
+      height: 450,
+      width: 650,
+      z_index: 1,
+      color: "#fff",
+      image: "",
+      setCurrentComponent: (a) => setCurrentComponent(a),
+    },
+  ]);
+
+  const removeComponent = () => {
+    console.log("removeComponent");
+  };
+
+  console.log(current_component);
   return (
     <div className="min-w-screen h-screen bg-black">
       <Header />
@@ -172,6 +205,37 @@ const Main = () => {
                     </div>
                   ))}
                 </div>
+              </div>
+            )}
+          </div>
+
+          <div className="w-full flex h-full">
+            <div
+              className={`flex justify-center relative items-center h-full ${
+                !current_component
+                  ? "w-full"
+                  : "w-[calc(100%-250px)] overflow-hidden"
+              }`}
+            >
+              <div className="'m-w-[650px] m-h-[480px] flex justify-center items-center overflow-hidden">
+                <div
+                  id="main_design"
+                  className="w-auto relative h-auto overflow-hidden"
+                >
+                  {components.map((c, i) => (
+                    <CreateComponente
+                      key={i}
+                      info={c}
+                      current_component={current_component}
+                      removeComponent={removeComponent}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+            {current_component && (
+              <div className="h-full w-[250px] text-gray-300 bg-[#252627] px-3 py-2">
+                Version
               </div>
             )}
           </div>
