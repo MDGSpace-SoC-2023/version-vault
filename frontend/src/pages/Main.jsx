@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { BsGrid1X2, BsFillImageFill, BsFolder } from "react-icons/bs";
 import { FaShapes, FaCloudUploadAlt } from "react-icons/fa";
@@ -14,6 +14,10 @@ import CreateComponente from "../components/CreateComponent";
 const Main = () => {
   const [state, setState] = useState("");
   const [current_component, setCurrentComponent] = useState("");
+  const [color, setColor] = useState("");
+  const [image, setImage] = useState("");
+  const [rotate, setRotate] = useState(0);
+
   const [show, setShow] = useState({
     status: true,
     name: "",
@@ -53,11 +57,55 @@ const Main = () => {
     },
   ]);
 
-  const removeComponent = () => {
-    console.log("removeComponent");
+  const createShape = (name, type) => {
+    const style = {
+      id: components.length + 1,
+      name: name,
+      type,
+      left: 10,
+      top: 10,
+      opacity: 1,
+      width: 200,
+      height: 150,
+      rotate,
+      z_index: 2,
+      color: "#3c3c3d",
+      setCurrentComponent: (a) => setCurrentComponent(a),
+      remove_background: () => setImage(""),
+      moveElement,
+      resizeElement,
+      rotateElement,
+    };
+    setComponents([...components, style]);
   };
 
-  console.log(current_component);
+  const removeComponent = (id) => {
+    const temp = components.filter((c) => c.id !== id);
+    setCurrentComponent("");
+    setComponents(temp);
+  };
+
+  const remove_background = () => {
+    const com = components.find((c) => c.id === current_component.id);
+    const temp = components.filter((c) => c.id !== current_component.id);
+    com.image = "";
+    setImage("");
+    setComponents([...temp, com]);
+  };
+
+  useEffect(() => {
+    if (current_component) {
+      const index = components.findIndex((c) => c.id === current_component.id);
+      const temp = components.filter((c) => c.id !== current_component.id); //to render the image at one you click on it
+      if (current_component.name === "main_frame" && image) {
+        console.log(image);
+        components[index].image = image || current_component.image;
+      }
+      components[index].color = color || current_component.color;
+
+      setComponents([...temp, components[index]]); //to render the image at once as you click on it
+    }
+  }, [color, image]);
   return (
     <div className="min-w-screen h-screen bg-black">
       <Header />
@@ -164,9 +212,18 @@ const Main = () => {
               </div>
             )}
             {state === "shape" && (
-              <div className="grid grid-cols-3 gap-2">
-                <div className="h-[90px] bg-[#3c3c3d] cursor-pointer"></div>
-                <div className="h-[90px] bg-[#3c3c3d] cursor-pointer rounded-full"></div>
+              <div
+                onClick={() => createShape("shape", "rect")}
+                className="grid grid-cols-3 gap-2"
+              >
+                <div
+                  onClick={() => createShape("shape", "circle")}
+                  className="h-[90px] bg-[#3c3c3d] cursor-pointer"
+                ></div>
+                <div
+                  onClick={() => createShape("shape", "triangle")}
+                  className="h-[90px] bg-[#3c3c3d] cursor-pointer rounded-full"
+                ></div>
                 <div
                   style={{ clipPath: "polygon(50% 0,100% 100%,0 100%)" }}
                   className="h-[90px] bg-[#3c3c3d] cursor-pointer"
@@ -194,13 +251,16 @@ const Main = () => {
                 <div className="grid gird-cols-2 gap-2">
                   {[1, 2, 3, 4, 6, 7, 8, 5].map((img, i) => (
                     <div
+                      onClick={() =>
+                        setImage(`http://localhost:5173/project.png`)
+                      }
                       key={i}
                       className="w-full h-[180px] overflow-hidden rounded-sm cursor-pointer"
                     >
                       <img
                         className="w-full h-full object-fill"
                         src={`http://localhost:5173/project.png`}
-                        alt=""
+                        alt="image"
                       />
                     </div>
                   ))}
@@ -235,7 +295,40 @@ const Main = () => {
             </div>
             {current_component && (
               <div className="h-full w-[250px] text-gray-300 bg-[#252627] px-3 py-2">
-                Version
+                <div className="flex gap-6 flex-col items-start h-full px-3 justify-start">
+                  <div className="flex gap-4 justify-start items-start">
+                    <span>Color :</span>
+                    <label
+                      className="w-[30px] h-[30px] cursor-pointer rounded-sm"
+                      style={{
+                        background: `${
+                          current_component.color &&
+                          current_component.color !== "#fff"
+                            ? current_component.color
+                            : "gray"
+                        }`,
+                      }}
+                      htmlFor="color"
+                    ></label>
+                    <input
+                      onChange={(e) => setColor(e.target.value)}
+                      type="color"
+                      className="invisible"
+                      id="color"
+                    />
+                  </div>
+                  {current_component.name === "main_frame" &&
+                    current_component.image && (
+                      <div>
+                        <button
+                          className="p-[6px] bg-slate-700 text-white rounded-sm"
+                          onClick={remove_background}
+                        >
+                          Remove background
+                        </button>
+                      </div>
+                    )}
+                </div>
               </div>
             )}
           </div>
