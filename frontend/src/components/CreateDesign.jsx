@@ -5,7 +5,6 @@ import CreateComponent from "./CreateComponent";
 const CreateDesign = () => {
   const ref = useRef();
   const { state } = useLocation();
-
   const obj = {
     name: "main_frame",
     type: "rect",

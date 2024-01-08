@@ -76,6 +76,7 @@ const Main = () => {
       resizeElement,
       rotateElement,
     };
+    console.log(style);
     setComponents([...components, style]);
   };
 
@@ -98,7 +99,6 @@ const Main = () => {
       const index = components.findIndex((c) => c.id === current_component.id);
       const temp = components.filter((c) => c.id !== current_component.id); //to render the image at one you click on it
       if (current_component.name === "main_frame" && image) {
-        console.log(image);
         components[index].image = image || current_component.image;
       }
       components[index].color = color || current_component.color;
